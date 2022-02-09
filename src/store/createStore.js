@@ -1,5 +1,5 @@
 export function createStore(reduser, initialState) {
-  let state = initialState;
+  state = initialState;
   let listeners = []
 
   function getState() {

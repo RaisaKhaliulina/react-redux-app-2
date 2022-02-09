@@ -1,4 +1,11 @@
-import { createAction } from "@reduxjs/toolkit";
+import { createAction, createReducer } from "@reduxjs/toolkit";
+import { buildQueries } from "@testing-library/react";
+
+
+const initialState = [
+  { id: 1, title: "Task1",completed: false,deleted: "" }, 
+  { id: 2, title: "Task2",completed: false, deleted: "" }
+];
 
 const update = createAction("task/updated");
 const remove = createAction("task/removed");
@@ -12,26 +19,22 @@ export function titleChanged(id) {
 }
 export function taskDeleted(id) {
   return remove({id})
-}  
-function taskReduser(state = [], action) {
-  switch (action.type) {
-    case update.type: {
-      const newArray = [...state];
-      const elementIndex = newArray.findIndex(
-        (el) => el.id === action.payload.id
+} 
+
+const taskReduser = createReducer(initialState, (builder) => {
+  builder
+  .addCase(update, (state,action) => {
+    const elementIndex = state.findIndex(
+      (el) => el.id === action.payload.id
       );
-      newArray[elementIndex] = {
-        ...newArray[elementIndex],
+      state[elementIndex] = {
+        ...state[elementIndex],
         ...action.payload,
-      }
-      return newArray;
-    }
-    case remove.type: {
-      return state.filter((el) => el.id !==action.payload.id)
-      }
-      
-    default:
-      return state;
-  }
-}
+      };
+  })
+  .addCase(remove, (state, action) => {
+    return state.filter((el) => el.id !==action.payload.id)
+  });
+})
+
 export default taskReduser
