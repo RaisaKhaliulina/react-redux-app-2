@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import configureStore from "./store/store";
-import { taskCompleted, titleChanged, taskDeleted} from "./store/task";
+import { completeTask, titleChanged, taskDeleted} from "./store/task";
 const store = configureStore();
   const App = (params) => {
     const [state, setState] = useState(store.getState());
@@ -11,11 +11,6 @@ const store = configureStore();
         setState(store.getState());
       });
     }, []);
-
-  const completeTask = (taskId) => {
-    store.dispatch( taskCompleted(taskId));
-    console.log(store.getState());
-  };
 
   const changeTitle = (taskId) => {
     store.dispatch( titleChanged(taskId));
@@ -32,7 +27,7 @@ const store = configureStore();
           <p>{el.title}</p>
           <p>{`Completed: ${el.completed}`}</p>
           
-          <button onClick = {()=>completeTask(el.id) }>
+          <button onClick = {()=>store.dispatch(completeTask(el.id))}>
             Complete
           </button>
           <button onClick = {() => changeTitle(el.id) }>
