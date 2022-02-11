@@ -25,6 +25,19 @@ const taskSlice = createSlice({
       state.entities = state.entities.filter(
         (el) => el.id !==action.payload.id)
     },
+    create(state, action) {
+      const entityMaxId = state.entities.reduce((acc, curr) =>
+        acc.b > curr.b ? acc : curr
+      )
+
+      action.payload = {
+        ...action.payload,
+        id: entityMaxId.id + 1,
+        title: `New todo ${entityMaxId.id + 1}`,
+      }
+      state.entities.push(action.payload)
+      state.isLoading = false
+    },
     taskRequested(state) {
       state.isLoading = true;
     },
@@ -34,7 +47,7 @@ const taskSlice = createSlice({
     }
 }})
 const { actions, reducer: taskReducer} = taskSlice;
-const { recived, update, remove, taskRequested, taskRequestFailed } = actions;
+const { recived, update, remove,create,  taskRequested, taskRequestFailed } = actions;
 
 export const loadTasks = () => async(dispatch) => {
   dispatch(taskRequested())
@@ -45,6 +58,17 @@ export const loadTasks = () => async(dispatch) => {
   }catch (error) {
     dispatch(taskRequestFailed());
     dispatch(setError(error.message));
+  }
+}
+export const createTask = () => async (dispatch) => {
+  dispatch(taskRequested())
+
+  try {
+    const data = await todosService.post()
+    dispatch(create(data))
+  } catch (error) {
+    dispatch(taskRequestFailed())
+    dispatch(setError(error.message))
   }
 }
 

@@ -8,6 +8,7 @@ import {
   taskDeleted, 
   loadTasks, 
   getTasks , 
+  createTask,
   getTasksIsLoadingStatus } from "./store/task";
 import { Provider , useSelector, useDispatch } from "react-redux";
 
@@ -37,7 +38,8 @@ const App = (params) => {
   }
   return ( 
     <>
-    <h1>App</h1>{""}
+    <h1>App</h1>
+    <button onClick={() => dispatch(createTask())}>Add toto</button>
     <ul>
       {state.map(el =>( 
         <li key={el.id}>
