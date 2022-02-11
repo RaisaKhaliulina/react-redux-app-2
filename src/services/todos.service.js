@@ -1,9 +1,4 @@
-import httpService from "./http.service"
-import axios from "axios";
-
-axios.defaults.baseURL= "https://jsonplaceholder.typicode.com/"
-
-
+import httpService from "./http.service";
 const todosEndpoint = "todos/"
 const todosService = {
   fetch: async() => {

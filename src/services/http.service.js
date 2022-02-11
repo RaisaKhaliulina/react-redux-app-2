@@ -5,4 +5,4 @@ const httpService = {
   get: axios.get,
 };
 
-export default httpService
+export default httpService;
